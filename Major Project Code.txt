@@ -1,0 +1,72 @@
+Code:
+#include<WiFi.h>
+#include<WiFiClientSecure.h>
+#include<UniversalTelegramBot.h>
+#include<ArduinoJson.h>
+
+// Network credentials
+const char* ssid = “bvrith”; //moblie phone hotspot username
+const char* password = “1234”; //mobile phone hotspot password
+
+// Initialize Telegram BOT Token and Chat ID
+#define BOTtoken “6191825753:AAFW0eFCSu3WWEZ7r7SFEYpy-G39-66IqG4”
+#define CHAT ID “5519950251”
+
+const unsigned long eventInterval = 6000;
+unsigned long previousTime = 0;
+const int buzz = 2;
+const int motor = 18;
+const int vib = 5;
+const int buttonPin = 15;
+int buttonState = 0;
+
+WiFiClientSecure client;
+UniversalTelegramBot bot(BOTtoken, client);
+
+void setup()
+{
+Serial.begin(9600);
+
+//WiFi.mode(WIFI STA);
+WiFi.begin(ssid, password);
+
+pinMode(buttonPin, INPUT);
+pinMode(motor, OUTPUT);
+pinMode(buzz, OUTPUT);
+pinMode(vib, OUTPUT);
+digitalWrite(buzz, LOW);
+
+client.setCACert(TELEGRAM CERTIFICATE ROOT);
+bot.sendMessage(CHAT ID, “Device Started”, “”);
+
+}
+void loop()
+{
+
+buttonState = digitalRead(buttonPin);
+unsigned long currentTime = millis();
+
+if (currentTime - previousTime >= eventInterval)
+{
+
+delay(500);
+if (buttonState == LOW)
+{
+
+// turn LED on:
+Serial.println(“Eyes Closed”);
+digitalWrite(buzz, HIGH);
+digitalWrite(motor, HIGH);
+digitalWrite(vib, LOW);
+String message =“EYES CLOSED”;
+previousTime = currentTime;
+}
+
+if(buttonState == HIGH)
+{
+digitalWrite(buzz, LOW);
+digitalWrite(motor, LOW);
+digitalWrite(vib, HIGH);
+
+}
+}
